@@ -58,7 +58,7 @@ footer a {color:#0f172a; margin:0 0.5rem;}
 </head>
 <body>
 
-<button class="lang-toggle" onclick="toggleLang()">EN/ES</button>
+<button class="lang-toggle" onclick="toggleLang()">ES/EN/PT</button>
 
 <header>
   <div class="container">
@@ -119,9 +119,9 @@ footer a {color:#0f172a; margin:0 0.5rem;}
 </footer>
 
 <script>
-// ===== JavaScript completo con efecto 3D y botones funcionales =====
 let currentLang = 'es';
 const serviceCards = document.querySelectorAll('.service-card');
+const fadeSections = document.querySelectorAll('.fade-section');
 
 const translations = {
   en: {
@@ -165,6 +165,27 @@ const translations = {
     aboutDesc: "Soy Barria Juan Cruz, desarrollador apasionado por la programación y la Inteligencia Artificial. Me especializo en crear soluciones prácticas que permiten a empresas y profesionales automatizar procesos, mejorar la interacción con clientes y tomar decisiones basadas en datos. Mi objetivo es transformar ideas en herramientas funcionales y escalables.",
     more: "Ver más",
     less: "Ver menos"
+  },
+  pt: {
+    headerDesc: "Desenvolvedor | Especialista em Automação, Chatbots e Inteligência Artificial",
+    servicesTitle: "Serviços",
+    serviceTitles: ["Automação de Processos","Chatbots Inteligentes","Análise Preditiva","Geração de Conteúdo"],
+    serviceDescs: [
+      "Otimizo tarefas repetitivas para economizar tempo e recursos.",
+      "Desenvolvo chatbots personalizados para atendimento ao cliente.",
+      "Implemento modelos de IA para antecipar tendências.",
+      "Crio sistemas automáticos para gerar textos, imagens e dados."
+    ],
+    serviceDetails: [
+      ["Scripts automáticos para tarefas repetitivas.","Integração de APIs e ferramentas externas.","Automação de relatórios e análise de dados.","Otimização de fluxos de trabalho."],
+      ["Integração com WhatsApp, Telegram e web.","Chatbots inteligentes com IA.","Automação de consultas frequentes.","Análise de conversas para melhorias contínuas."],
+      ["Modelos de previsão para vendas e marketing.","Análise de dados históricos para tomada de decisões.","Visualização interativa de tendências.","Otimização de recursos baseada em previsões."],
+      ["Geração automática de artigos e posts.","Criação de imagens e gráficos com IA.","Automação de newsletters e conteúdo para redes sociais.","Sistemas escaláveis para produção de conteúdo em massa."]
+    ],
+    aboutTitle: "Sobre mim",
+    aboutDesc: "Sou Barria Juan Cruz, desenvolvedor apaixonado por programação e Inteligência Artificial. Especializo-me em criar soluções práticas que permitem que empresas e profissionais automatizem processos, melhorem a interação com clientes e tomem decisões baseadas em dados. Meu objetivo é transformar ideias em ferramentas funcionais e escaláveis.",
+    more: "Ver mais",
+    less: "Ver menos"
   }
 };
 
@@ -194,11 +215,19 @@ serviceCards.forEach((card,i)=>{
 });
 
 function toggleLang(){
-  currentLang = currentLang==='es'?'en':'es';
+  // Cambia entre ES → EN → PT → ES
+  if(currentLang==='es') currentLang='en';
+  else if(currentLang==='en') currentLang='pt';
+  else currentLang='es';
+
   document.getElementById('header-desc').textContent = translations[currentLang].headerDesc;
   document.getElementById('services-title').textContent = translations[currentLang].servicesTitle;
   document.getElementById('about-title').textContent = translations[currentLang].aboutTitle;
   document.getElementById('about-desc').textContent = translations[currentLang].aboutDesc;
+
+  // Forzar que todas las secciones se vean
+  fadeSections.forEach(sec => sec.classList.add('visible'));
+
   serviceCards.forEach((card,i)=>{
     cardStates[i].lang = currentLang;
     card.querySelector('.service-title').textContent = translations[currentLang].serviceTitles[i];
@@ -219,8 +248,14 @@ function toggleLang(){
 }
 
 // Scroll reveal
-const fadeSections = document.querySelectorAll('.fade-section');
-const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('visible'); observer.unobserve(entry.target); } }); }, { threshold:0.2 });
+const observer = new IntersectionObserver(entries => { 
+  entries.forEach(entry => { 
+    if(entry.isIntersecting){ 
+      entry.target.classList.add('visible'); 
+      observer.unobserve(entry.target); 
+    } 
+  }); 
+}, { threshold:0.2 });
 fadeSections.forEach(sec=>observer.observe(sec));
 
 // Parallax header
